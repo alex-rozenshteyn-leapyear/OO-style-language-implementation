@@ -5,7 +5,10 @@ module Data where
 
 data Expr = B Bool | I Int | Plus Expr Expr
 
-data TObj a = TObj {eval :: a}
+data TObj a = TObj
+  { eval :: a
+  , uncheck :: Obj
+  }
 
 data Obj = Obj
   { check :: Maybe (Tagged TObj)
