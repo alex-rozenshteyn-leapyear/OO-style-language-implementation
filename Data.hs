@@ -7,7 +7,10 @@ data Expr = B Bool | I Int | Plus Expr Expr
 
 data TObj a = TObj {eval :: a}
 
-data Obj = Obj {check :: Maybe (Tagged TObj)}
+data Obj = Obj
+  { check :: Maybe (Tagged TObj)
+  , printExpr :: String
+  }
 
 data Tag a where
   BTag :: Tag Bool
