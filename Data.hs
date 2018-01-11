@@ -3,7 +3,13 @@
 {-# LANGUAGE GADTs #-}
 module Data where
 
-data Expr = B Bool | I Int | Plus Expr Expr | Cond Expr Expr Expr
+data Expr
+  = B Bool
+  | I Int
+  | Plus Expr Expr
+  | Minus Expr Expr
+  | Times Expr Expr
+  | Cond Expr Expr Expr
 
 data TObj a = TObj
   { eval :: a
