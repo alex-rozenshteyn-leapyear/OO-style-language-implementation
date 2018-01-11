@@ -3,9 +3,9 @@ module Main where
 
 data Expr = I Int | Plus Expr Expr
 
-data Obj = Obj {eval :: Int}
+data Obj a = Obj {eval :: a}
 
-mkObj :: Expr -> Obj
+mkObj :: Expr -> Obj Int
 mkObj = \case
   I i -> Obj i
   Plus e1 e2 -> Obj $ eval (mkObj e1) + eval (mkObj e2)
