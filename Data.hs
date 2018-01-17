@@ -24,5 +24,6 @@ data Obj = Obj
 data Tag a where
   BTag :: Tag Bool
   ITag :: Tag Int
+  DTag :: Tag Double
 
 data Tagged f = forall a. Tagged (Tag a) (f a)

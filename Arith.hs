@@ -3,12 +3,15 @@
 {-# LANGUAGE GADTs #-}
 {-# LANGUAGE RecordWildCards #-}
 {-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE RankNTypes #-}
 module Arith where
+
+import Control.Applicative
 
 import Data
 
 data ArithOps = ArithOps
-  { opEval :: Int -> Int -> Int
+  { opEval :: forall a. Num a => a -> a -> a
   , opName :: String
   }
 
@@ -19,8 +22,12 @@ timesObj = arithObj (ArithOps (*) "*")
 arithObj :: ArithOps -> Obj -> Obj -> Obj
 arithObj ArithOps{..} o1 o2 = o
   where
-    o = Obj {printExpr = myPrintExpr, check = myCheck}
-    myCheck = (ITag `Tagged`) <$> do
+    o = Obj {printExpr = myPrintExpr, check = myCheckI <|> myCheckD}
+    myCheckD = (DTag `Tagged`) <$> do
+      Tagged DTag to1 <- check o1
+      Tagged DTag to2 <- check o2
+      return $ TObj {eval = eval to1 `opEval` eval to2, uncheck = o}
+    myCheckI = (ITag `Tagged`) <$> do
       Tagged ITag to1 <- check o1
       Tagged ITag to2 <- check o2
       return $ TObj {eval = eval to1 `opEval` eval to2, uncheck = o}
